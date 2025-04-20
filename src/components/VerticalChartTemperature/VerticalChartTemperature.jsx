@@ -5,16 +5,9 @@ import {
   selectError,
   selectLoading,
 } from '../../redux/weatherSlice';
-import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 
-const TemperatureChart = () => {
+const VerticalChartTemperature = () => {
   const data = useSelector(selectData);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
@@ -26,11 +19,11 @@ const TemperatureChart = () => {
   const charData = data.list
     .filter((_, index) => index % 8 === 0)
     .map(item => ({
-      name: new Date(item.dt * 1000).toLocaleDateString('uk-UA', {
+      name: new Date(item.dt * 1000).toLocaleDateString('en', {
         weekday: 'short',
       }),
-      uv: Math.round(item.main.temp),
-      pv: Math.round(item.main.feels_like),
+      uv: Math.floor(item.main.temp),
+      pv: Math.floor(item.main.feels_like),
     }));
 
   return (
@@ -38,7 +31,7 @@ const TemperatureChart = () => {
       <h2>Weather forecast for {data.city.name}</h2>
 
       <div>
-        <LineChart
+        <BarChart
           width={800}
           height={300}
           data={charData}
@@ -48,22 +41,24 @@ const TemperatureChart = () => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Line
+          <Bar
             type="monotone"
             dataKey="uv"
             stroke="#ff7300"
             name="Temperature (°C)"
+            fill="orange"
           />
-          <Line
+          <Bar
             type="monotone"
             dataKey="pv"
             stroke="#387908"
             name="Feels like (°C)"
+            fill="green"
           />
-        </LineChart>
+        </BarChart>
       </div>
     </div>
   );
 };
 
-export default TemperatureChart;
+export default VerticalChartTemperature;
