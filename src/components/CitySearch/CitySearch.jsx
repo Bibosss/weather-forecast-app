@@ -10,7 +10,12 @@ const CitySearch = () => {
   const handleSearch = () => {
     if (city.trim()) {
       dispatch(fetchWeather(city));
-      setCity('');
+    }
+  };
+
+  const handleKeyDown = e => {
+    if (e.key === 'Enter') {
+      handleSearch();
     }
   };
 
@@ -21,6 +26,7 @@ const CitySearch = () => {
         value={city}
         placeholder="Write city"
         onChange={e => setCity(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
       <button onClick={handleSearch}>Search</button>
     </div>
